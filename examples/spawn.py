@@ -19,7 +19,7 @@ if __name__ == "__main__":
 
     for row in RESULTS.response:
         print("=" * 80)
-        for key, val in row.iteritems():
+        for key, val in row.items():
             print("%s => %s" % (key, val))
     if len(RESULTS.response) > 0:
         print("=" * 80)

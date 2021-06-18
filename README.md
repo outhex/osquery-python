@@ -8,8 +8,6 @@ If you're interested in learning more about osquery, visit the [GitHub project](
 
 ### What is osquery-python?
 
-[![Build Status](https://travis-ci.org/osquery/osquery-python.svg?branch=master)](https://travis-ci.org/osquery/osquery-python)
-
 In osquery, SQL tables, configuration retrieval, log handling, etc are implemented via a simple, robust plugin and extensions API. This project contains the official Python bindings for creating osquery extensions in Python. Consider the following example:
 
 ```python
@@ -116,13 +114,18 @@ Then use the Python bindings:
 ```python
 import osquery
 
+LINUX_THRIFT_SOCKET = '/var/osquery/osquery.em'
+WINDOWS_THRIFT_SOCKET = r'\\.\pipe\osquery.em'
+
 if __name__ == "__main__":
     # You must know the Thrift socket path
     # For an installed and running system osqueryd, this is:
     #   Linux and macOS: /var/osquery/osquery.em
     #   FreeBSD: /var/run/osquery.em
     #   Windows: \\.\pipe\osquery.em
-    instance = osquery.ExtensionClient('/home/you/.osquery/osqueryd.sock')
+    instance = osquery.ExtensionClient(WINDOWS_THRIFT_SOCKET \
+        if sys.platform == 'win32' else LINUX_THRIFT_SOCKET)
+
     instance.open()  # This may raise an exception
 
     # Issue queries and call osquery Thrift APIs.
@@ -132,17 +135,10 @@ if __name__ == "__main__":
 
 ### Install
 
-To install from PyPi, run the following:
+To install from this repo, run the following:
 
-```
-pip install osquery
-```
-
-Alternatively, to install from this repo, run the following:
-
-```
-python setup.py build
-python setup.py install
+```sh
+pip install git+https://github.com/outhex/osquery-python.git
 ```
 
 
